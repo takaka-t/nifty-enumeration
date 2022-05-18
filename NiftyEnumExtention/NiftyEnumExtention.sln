@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiftyEnumExtention", "NiftyEnumExtention.csproj", "{DDEF5FFD-ADEA-4212-BBEE-D6C5C6E909C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NiftyEnumExtention", "NiftyEnumExtention.csproj", "{DDEF5FFD-ADEA-4212-BBEE-D6C5C6E909C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NiftyEnumExtentionTest", "..\NiftyEnumExtentionTest\NiftyEnumExtentionTest.csproj", "{3067CD84-6055-4AD8-A99B-0500AB181ADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DDEF5FFD-ADEA-4212-BBEE-D6C5C6E909C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDEF5FFD-ADEA-4212-BBEE-D6C5C6E909C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDEF5FFD-ADEA-4212-BBEE-D6C5C6E909C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3067CD84-6055-4AD8-A99B-0500AB181ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3067CD84-6055-4AD8-A99B-0500AB181ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3067CD84-6055-4AD8-A99B-0500AB181ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3067CD84-6055-4AD8-A99B-0500AB181ADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
