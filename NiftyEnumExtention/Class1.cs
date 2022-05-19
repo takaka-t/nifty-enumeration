@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace NiftyEnumExtention
 {
@@ -20,6 +20,9 @@ namespace NiftyEnumExtention
         }
     }
 
+    /// <summary>
+    /// Enum拡張メソッド定義
+    /// </summary>
     public static class EnumExtention
     {
         /// <summary>
@@ -37,26 +40,30 @@ namespace NiftyEnumExtention
 
 
         /// <summary>
-        /// Combobox等のDataSource用
-        /// 匿名クラス{Value,StringValueのリストを返す(仮)
-        /// 例: new TestEnum().GetItems
+        /// ValueTuple型(Value,StringValue)のリストを返す
+        /// 例: new TestEnum().GetItems ? TODO これ拡張じゃないほうがいいか...
         /// </summary>
         /// <param name = "enumeration" ></ param >
         /// <returns></returns>
         public static IEnumerable<(T Value, string StringValue)> GetItems<T>(this T enumeration) where T : Enum
         {
             //現在対象Enumのフィールドをすべて取得
-            var fields = T.GetType();
+            var fields = typeof(T).GetFields(BindingFlags.Public);
+            //取得した全てのフィールドを戻り値の方にして返す
+            return fields.Select((f) => ((T)f.GetValue(null), GetEnumStringValue(f)));
         }
 
-        /// < summary >
+
+        /// <summary>
         /// 対象FieldのEnumStringValue属性から文字列を取得する
-        /// </ summary >
-        /// < param name = "field" ></ param >
-        /// < returns > 未設定の場合は空文字 </ returns >
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns>未設定の場合は空文字</returns>
         private static string GetEnumStringValue(FieldInfo field)
         {
+            //対象フィールドに設定されているEnumStringValueAttribute取得
             var attribute = field.GetCustomAttribute<EnumStringValueAttribute>();
+            //取得できた場合、保持している文字列値を返す
             return attribute != null ? attribute.Value : "";
         }
 
