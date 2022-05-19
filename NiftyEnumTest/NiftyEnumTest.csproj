@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NiftyEnumExtention\NiftyEnumExtention.csproj" />
+    <ProjectReference Include="..\NiftyEnum\NiftyEnum.csproj" />
   </ItemGroup>
 
 </Project>

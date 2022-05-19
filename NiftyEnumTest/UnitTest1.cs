@@ -17,7 +17,10 @@ namespace NiftyEnumExtentionTest
         [Fact]
         public void Test1()
         {
-            new AAA().
+            //new AAA()
+            var a = AAA.b.StringValue();
+
+            NiftyEnum.StringValue(AAA.b);
 
         }
     }
