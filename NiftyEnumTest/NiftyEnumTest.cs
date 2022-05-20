@@ -1,5 +1,7 @@
 using NiftyEnum;
+//using static NiftyEnum.Methods;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace NiftyEnumExtentionTest
@@ -7,22 +9,27 @@ namespace NiftyEnumExtentionTest
     public class NiftyEnumTest
     {
 
-        enum AAA
+        enum TestEnum
         {
-            [EnumStringValue("aaa")]
-            aaa,
-            bbb,
-            ccc,
-            ddd,
+            [EnumStringValue("‚ ‚ ‚ ")]
+            AAA,
+            [EnumStringValue("‚¢‚¢‚¢")]
+            BBB,
+            [EnumStringValue("‚¤‚¤‚¤")]
+            CCC,
+            [EnumStringValue("‚¦‚¦‚¦")]
+            DDD,
         }
 
         [Fact]
         public void Test1()
         {
-            //new AAA()
-            var a = AAA.bbb.StringValue();
-            Methods.GetItems<AAA>();
-            //NiftyEnum.StringValue(AAA.b);
+            var str1 = TestEnum.AAA.StringValue();
+            Assert.Equal("‚ ‚ ‚ ", str1);
+            Assert.NotEqual("‚¢‚¢‚¢", str1);
+
+            var items = EnumHelper.GetItems<TestEnum>();
+            Assert.Equal(4, items.Count());
 
         }
     }

@@ -24,7 +24,7 @@ namespace NiftyEnum
     /// <summary>
     /// メソッド定義
     /// </summary>
-    public static class Methods
+    public static class EnumHelper
     {
 
         /// <summary>
@@ -50,7 +50,8 @@ namespace NiftyEnum
         public static IEnumerable<(T Value, string StringValue)> GetItems<T>() where T : Enum
         {
             //現在対象Enumのフィールドをすべて取得
-            var fields = typeof(T).GetFields(BindingFlags.Public);
+            var fields = typeof(T).GetFields().
+                Where((f) => f.Attributes == (FieldAttributes.Public | FieldAttributes.Static | FieldAttributes.Literal | FieldAttributes.HasDefault));
             //取得した全てのフィールドを戻り値の方にして返す
             return fields.Select((f) => ((T)f.GetValue(null), GetEnumStringValue(f)));
         }
