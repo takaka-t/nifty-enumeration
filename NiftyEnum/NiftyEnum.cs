@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -26,12 +25,11 @@ namespace NiftyEnum
     /// </summary>
     public static class EnumHelper
     {
-
         /// <summary>
-        /// EnumStringValue属性に設定した文字列を取得する
-        /// 例: TestEnum.A.StringValue
+        /// 対象のフィールのEnumStringValue属性に設定した文字列を取得する
         /// </summary>
-        /// <param name = "enumeration" > 列挙型のフィールド </ param >
+        /// <remarks>例:TestEnum.AAA.StringValue();</remarks>
+        /// <param name="value">列挙型のフィールド</param>
         /// <returns>未設定の場合は空文字</returns>
         public static string StringValue(this Enum value)
         {
@@ -40,20 +38,18 @@ namespace NiftyEnum
             return GetEnumStringValue(field);
         }
 
-
         /// <summary>
-        /// ValueTuple型(Value,StringValue)のリストを返す
-        /// 例: new TestEnum().GetItems ? TODO これ拡張じゃないほうがいいか...
+        /// 対象のEnumをValueTuple型(Value,StringValue)の配列として返す
         /// </summary>
-        /// <param name = "enumeration" ></ param >
+        /// <remarks>例:EnumHelper.GetItems&lt;TestEnum&gt;();</remarks>
+        /// <typeparam name="T">指定のEnum</typeparam>
         /// <returns></returns>
-        public static IEnumerable<(T Value, string StringValue)> GetItems<T>() where T : Enum
+        public static (T Value, string StringValue)[] GetItems<T>() where T : struct, Enum
         {
-            //現在対象Enumのフィールドをすべて取得
-            var fields = typeof(T).GetFields().
-                Where((f) => f.Attributes == (FieldAttributes.Public | FieldAttributes.Static | FieldAttributes.Literal | FieldAttributes.HasDefault));
+            //現在対象Enumのフィールドをすべて取得 型情報のフィールド(?)は除外
+            var fields = typeof(T).GetFields().Where((f) => f.Attributes == (FieldAttributes.Public | FieldAttributes.Static | FieldAttributes.Literal | FieldAttributes.HasDefault));
             //取得した全てのフィールドを戻り値の方にして返す
-            return fields.Select((f) => ((T)f.GetValue(null), GetEnumStringValue(f)));
+            return fields.Select((f) => ((T)f.GetValue(null), GetEnumStringValue(f))).OrderBy((f) => f.Item1).ToArray();
         }
 
         /// <summary>
@@ -69,7 +65,27 @@ namespace NiftyEnum
             return attribute != null ? attribute.Value : "";
         }
 
-    }
+        /// <summary>
+        /// 指定のEnumに値を変換する
+        /// </summary>
+        /// <remarks>
+        /// 例:EnumHelper.Convert&lt;TestEnum&gt;(3)
+        /// </remarks>
+        /// <typeparam name="T">指定のEnum</typeparam>
+        /// <param name="value">値</param>
+        /// <returns>範囲外の値は例外(InvalidCastException)</returns>
+        public static T Convert<T>(object value) where T : struct, Enum
+        {
+            //未定義の場合は例外
+            if (Enum.IsDefined(typeof(T), value) == false)
+            {
+                throw new InvalidCastException("範囲外の値です。");
+            }
 
+            //string型の変換にも対応するためTryParseで変換
+            _ = Enum.TryParse(value.ToString(), out T result);
+            return result;
+        }
+    }
 
 }
