@@ -1,131 +1,139 @@
-using NiftyEnum;
+ï»¿using NiftyEnum;
 using System;
 using System.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace NiftyEnumTest
 {
     public class NiftyEnumTest
     {
 
+        private readonly ITestOutputHelper _output;
+
+        public NiftyEnumTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         enum TestEnum
         {
-            [EnumStringValue("‚ ‚ ‚ ")]
+            [EnumStringValue("ã‚ã‚ã‚")]
             AAA,
-            [EnumStringValue("‚¢‚¢‚¢")]
+            [EnumStringValue("ã„ã„ã„")]
             BBB,
-            [EnumStringValue("‚¤‚¤‚¤")]
+            [EnumStringValue("ã†ã†ã†")]
             CCC,
-            //[EnumStringValue("‚¦‚¦‚¦")]
+            //[EnumStringValue("ãˆãˆãˆ")]
             DDD,
         }
 
         [Fact]
-        public void NiftyEnum‚ÌStringValueƒeƒXƒg()
+        public void NiftyEnumã®StringValueãƒ†ã‚¹ãƒˆ()
         {
-            //•¶š—ñ’læ“¾
+            //æ–‡å­—åˆ—å€¤å–å¾—
             var aaa = TestEnum.AAA.StringValue();
-            Assert.Equal("‚ ‚ ‚ ", aaa);
+            Assert.Equal("ã‚ã‚ã‚", aaa);
 
-            //EnumStringValue‚ª–¢İ’è‚Ìê‡
+            //EnumStringValueãŒæœªè¨­å®šã®å ´åˆ
             var ddd = TestEnum.DDD.StringValue();
             Assert.Equal("", ddd);
         }
 
         [Fact]
-        public void NiftyEnum‚ÌGetItemsƒeƒXƒg()
+        public void NiftyEnumã®GetItemsãƒ†ã‚¹ãƒˆ()
         {
-            //æ“¾”³‚µ‚¢‚©
+            //å–å¾—æ•°æ­£ã—ã„ã‹
             var items = EnumHelper.GetItems<TestEnum>();
             Assert.Equal(4, items.Count());
 
-            //1”Ô–Ú‚Ì—v‘f‚ÅŒŸØ
+            //1ç•ªç›®ã®è¦ç´ ã§æ¤œè¨¼
             var bbb = items[1];
             Assert.Equal(TestEnum.BBB, bbb.Value);
 
-            //‚±‚ñ‚È‘‚«•û‚à‚Å‚«‚é‚Ì‚©
+            //ã“ã‚“ãªæ›¸ãæ–¹ã‚‚ã§ãã‚‹ã®ã‹
             var (Value, StringValue) = items[2];//.ElementAt(2);
-            Assert.Equal("‚¤‚¤‚¤", StringValue);
+            Assert.Equal("ã†ã†ã†", StringValue);
         }
 
         [Fact]
-        public void NiftyEnum‚ÌConvertƒeƒXƒg()
+        public void NiftyEnumã®Convertãƒ†ã‚¹ãƒˆ()
         {
-            //”ÍˆÍ“à‚Ì”’l
+            //ç¯„å›²å†…ã®æ•°å€¤
             var aaa = EnumHelper.Convert<TestEnum>(0);
             Assert.Equal(TestEnum.AAA, aaa);
-            //”ÍˆÍŠO‚Ì”’l
+            //ç¯„å›²å¤–ã®æ•°å€¤
             Assert.Throws<InvalidCastException>(() => EnumHelper.Convert<TestEnum>(5));
 
-            //‘¶İ‚·‚éƒtƒB[ƒ‹ƒh–¼
+            //å­˜åœ¨ã™ã‚‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
             aaa = EnumHelper.Convert<TestEnum>("AAA");
             Assert.Equal(TestEnum.AAA, aaa);
-            //‘¶İ‚µ‚È‚¢ƒtƒB[ƒ‹ƒh–¼
+            //å­˜åœ¨ã—ãªã„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
             Assert.Throws<InvalidCastException>(() => EnumHelper.Convert<TestEnum>("AAB"));
         }
 
         [Fact]
-        public void Enum‚ÌToSting‚ÆGetValues()
+        public void Enumã®ToStingã¨GetValues()
         {
-            //ToString‚ÍƒtƒB[ƒ‹ƒh–¼‚ª‚Æ‚ê‚é
+            //ToStringã¯ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åãŒã¨ã‚Œã‚‹
             var aaaStr = TestEnum.AAA.ToString();
             Assert.Equal("AAA", aaaStr);
 
-            //‘SŒæ“¾
+            //å…¨ä»¶å–å¾—
             var values = Enum.GetValues<TestEnum>();
             Assert.Equal(4, values.Length);
             Assert.Equal(TestEnum.BBB, values[1]);
         }
 
         [Fact]
-        public void Enum‚ÌƒLƒƒƒXƒg()
+        public void Enumã®ã‚­ãƒ£ã‚¹ãƒˆ()
         {
-            //”’l‚ğƒLƒƒƒXƒg‚·‚é‚±‚Æ‚Å•ÏŠ·‰Â”\
+            //æ•°å€¤ã‚’ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹ã“ã¨ã§å¤‰æ›å¯èƒ½
             var bbb = (TestEnum)1;
             Assert.Equal(TestEnum.BBB, bbb);
 
-            //”ÍˆÍŠO‚Í‚»‚Ì‚Ü‚Ü”’l‚Ì5‚ª‚©‚¦‚é
+            //ç¯„å›²å¤–ã¯ãã®ã¾ã¾æ•°å€¤ã®5ãŒã‹ãˆã‚‹
             var result = (TestEnum)5;
-            Console.WriteLine(result);
+            _output.WriteLine(result.ToString());
             Assert.IsType<TestEnum>(result);
 
-            //•¶š—ñ‚ÍTryParse‚¶‚á‚È‚¢‚ÆƒLƒƒƒXƒg‚Å‚«‚È‚¢‚Á‚Û‚¢
-            //string value = "AAA"; stringŒ^‚¾‚ÆƒLƒƒƒXƒg©‘Ì‚ªƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚É‚È‚é
+            //æ–‡å­—åˆ—ã¯TryParseã˜ã‚ƒãªã„ã¨ã‚­ãƒ£ã‚¹ãƒˆã§ããªã„ã£ã½ã„
+            //string value = "AAA"; stringå‹ã ã¨ã‚­ãƒ£ã‚¹ãƒˆè‡ªä½“ãŒã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹
             object value = "AAA";
             Assert.Throws<InvalidCastException>(() => (TestEnum)value);
         }
 
         [Fact]
-        public void Enum‚ÌTryParse()
+        public void Enumã®TryParse()
         {
-            //TryParse‚à‚ ‚éA‚È‚º‚©stringŒ^‚ğ‚¤‚¯‚Æ‚é
+            //TryParseã‚‚ã‚ã‚‹ã€ãªãœã‹stringå‹ã‚’ã†ã‘ã¨ã‚‹
             bool result = Enum.TryParse(2.ToString(), out TestEnum kokoko);
             Assert.Equal(TestEnum.CCC, kokoko);
             Assert.True(result);
 
-            //TryParse‚Å”ÍˆÍŠO‚µ‚Ä‚àtrue‚ª‚©‚¦‚Á‚ÄA‚±‚Ìê‡‚¾‚Æout‚É5‚ª“ü‚é
+            //TryParseã§ç¯„å›²å¤–ã—ã¦ã‚‚trueãŒã‹ãˆã£ã¦ã€ã“ã®å ´åˆã ã¨outã«5ãŒå…¥ã‚‹
             bool result2 = Enum.TryParse(5.ToString(), out TestEnum kekek);
             Assert.NotEqual(TestEnum.CCC, kekek);
             Assert.True(result2);
 
-            //ƒtƒB[ƒ‹ƒh–¼‚Å‚àOK
+            //ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã§ã‚‚OK
             bool result3 = Enum.TryParse("DDD", out TestEnum kukuku);
             Assert.Equal(TestEnum.DDD, kukuku);
             Assert.True(result3);
 
-            //‘¶İ‚µ‚È‚¢ƒtƒB[ƒ‹ƒh–¼‚Í‚³‚·‚ª‚Éfalse‚İ‚½‚¢
+            //å­˜åœ¨ã—ãªã„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã¯ã•ã™ãŒã«falseã¿ãŸã„
             bool result4 = Enum.TryParse("DDE", out TestEnum kakaka);
             Assert.NotEqual(TestEnum.DDD, kakaka);
             Assert.False(result4);
 
-            //IsDefined‚Å’è‹`‚³‚ê‚Ä‚¢‚é‚©Šm”F‚µ‚Ä‚©‚ç‚ÌƒLƒƒƒXƒg‚ªˆê”ÔˆÀƒpƒC ¨ ConvertŠÖ”—pˆÓ
+            //IsDefinedã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã—ã¦ã‹ã‚‰ã®ã‚­ãƒ£ã‚¹ãƒˆãŒä¸€ç•ªå®‰ãƒ‘ã‚¤ â†’ Converté–¢æ•°ç”¨æ„
         }
 
         [Fact]
-        public void Enum‚ÌIsDefined()
+        public void Enumã®IsDefined()
         {
-            //TryParse‚ª‚È‚ñ‚Å‚àtrue‚É‚È‚è‚»‚¤‚È‚Ì‚ÅA
-            //IsDefined‚Å’è‹`‚³‚ê‚Ä‚¢‚é‚©Šm”F‚µ‚Ä‚©‚ç‚ÌƒLƒƒƒXƒg‚ªˆê”ÔˆÀƒpƒC ¨ ConvertŠÖ”—pˆÓ
+            //TryParseãŒãªã‚“ã§ã‚‚trueã«ãªã‚Šãã†ãªã®ã§ã€
+            //IsDefinedã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã—ã¦ã‹ã‚‰ã®ã‚­ãƒ£ã‚¹ãƒˆãŒä¸€ç•ªå®‰ãƒ‘ã‚¤ â†’ Converté–¢æ•°ç”¨æ„
             var isDefined1 = Enum.IsDefined(typeof(TestEnum), 5);
             Assert.False(isDefined1);
             var isDefined2 = Enum.IsDefined(typeof(TestEnum), 2);
@@ -134,6 +142,12 @@ namespace NiftyEnumTest
             Assert.True(isDefined3);
             var isDefined4 = Enum.IsDefined(typeof(TestEnum), "AAB");
             Assert.False(isDefined4);
+
+            //Enumã§å®šç¾©ã•ã‚ŒãŸå‹ã¨å€¤ãŒç•°ãªã‚‹å ´åˆã¯ã€ä¾‹å¤–ãŒç™ºç”Ÿã™ã‚‹
+            Assert.Throws<ArgumentException>(() => Enum.IsDefined(typeof(TestEnum), (byte)2));
+            //stringå‹ã¯ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰åã¨ç…§åˆã™ã‚‹ãŸã‚å•é¡Œãªã„ã€ãŒä¸‹è¨˜ã®ä¾‹ã¯å€¤ã®æ–‡å­—åˆ—ãªã®ã§False
+            var isDefined5 = Enum.IsDefined(typeof(TestEnum), 2.ToString());
+            Assert.False(isDefined5);
         }
 
     }

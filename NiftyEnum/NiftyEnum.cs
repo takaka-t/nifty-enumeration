@@ -66,7 +66,8 @@ namespace NiftyEnum
         }
 
         /// <summary>
-        /// 指定のEnumに値を変換する
+        /// 指定のEnumに値を変換する<br/>
+        /// ※通常のキャストとの違いは、範囲外の数値で例外が発生することと、フィールド名としての文字列値からも変換できる
         /// </summary>
         /// <remarks>
         /// 例:EnumHelper.Convert&lt;TestEnum&gt;(3)
