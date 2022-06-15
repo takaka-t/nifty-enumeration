@@ -150,5 +150,19 @@ namespace NiftyEnumTest
             Assert.False(isDefined5);
         }
 
+        enum EmptyEnum
+        {
+
+        }
+
+        [Fact]
+        public void EmptyEnumのテスト()
+        {
+            var result = EnumHelper.GetItems<EmptyEnum>();
+            Assert.Empty(result);
+
+            Assert.Throws<InvalidCastException>(() => EnumHelper.Convert<EmptyEnum>(1));
+        }
+
     }
 }

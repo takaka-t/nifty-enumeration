@@ -37,7 +37,7 @@ namespace NiftyEnumTest
             //DBから取得した値をEnum型に変換して扱っており、表示文字列に変換する時など
 
             //Enum
-            var value = ColorEnum.Blue  ;
+            var value = ColorEnum.Blue;
 
             //文字列値取得
             var color = value.StringValue();
@@ -92,6 +92,33 @@ namespace NiftyEnumTest
                 _output.WriteLine($"値:{item.Value} ラベル:{item.Label}");
             }
         }
+
+        #region nuget.orgのReadMe用
+
+        enum SampleEnum : byte
+        {
+            [EnumStringValue("青")]
+            Blue,
+            [EnumStringValue("赤")]
+            Red,
+            [EnumStringValue("黄色")]
+            Yellow,
+        }
+
+        [Fact]
+        public void ReadMe()
+        {
+            //srt = "赤";
+            string str = SampleEnum.Red.StringValue();
+
+            //items = { (SampleEnum.Blue, "青"), (SampleEnum.Red, "赤"), (SampleEnum.Yellow, "黄色") };
+            (SampleEnum Value, string StringValue)[] items = EnumHelper.GetItems<SampleEnum>();
+
+            //result = SampleEnum.Yellow;
+            SampleEnum result = EnumHelper.Convert<SampleEnum>((byte)2);
+        }
+
+        #endregion
 
     }
 }
